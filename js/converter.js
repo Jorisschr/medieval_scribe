@@ -11,6 +11,7 @@ let dict = {
     'afbeelding': ['beeltenis'],
     'allemaal': ['eenieder', 'alleman'],
     'auto': ['huifkar', 'koets'],
+    'bob': ['koetsier'],
     'bericht': ['telegram'],
     'bier': ['gerstenat'],
     'bierfiets': ['gerstenvat op wielen'],
@@ -55,9 +56,11 @@ let dict = {
 
 let rules = {
     'aa': 'ae',
+    'a([zrtpqsdfghklmwxcvbn][aeuioy])': 'ae$1',
     'ij': 'y',
     'ei': 'ey',
     'z': 's',
+    'ch': 'g',
     'c([^ie])': 'k$1',
     '([^ c])k+': '$1ck',
     'g+': 'gh',
