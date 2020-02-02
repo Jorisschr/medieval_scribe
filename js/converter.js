@@ -5,34 +5,51 @@ input.addEventListener("input", processInput)
 output.addEventListener("click", copyToClipboard)
 
 
+// TODO: Capital letter compatibility
+
 let dict = {
-    'afbeelding': 'beeltenis',
-    'allemaal': randomElement(['eenieder', 'alleman']),
-    'auto': randomElement(['huifkar', 'koets']),
-    'bericht': 'telegram',
-    'bier': 'gerstenat',
-    'bierfiets': 'gerstenvat op wielen',
-    'café': randomElement(['herberg', 'taveerne', 'taverne']),
-    'computer': 'schrijflei',
-    'en': 'ende',
-    'feest': 'bal',
-    'feestje': 'bal',
-    'fiets': 'stalen ros',
-    'foto': 'beeltenis',
-    'fuif': 'bal',
-    'gsm': 'postduif',
-    'hey': 'gegroet',
-    'hoi': 'gegroet',
-    'hallo': 'gegroet',
-    'iedereen': randomElement(['eenieder', 'alleman']),
-    'jow': 'gegroet',
-    'joe': 'gegroet',
-    'maar': randomElement(['maar', 'doch']),
-    'selfie': randomElement(['zelfportret', 'zelfbeeltenis']),
-    'smartphone': 'pientere postduif',
-    'sms': 'telegram',
-    'vriend': randomElement(['kompaen', 'gezel', 'metgezel', 'makker']),
-    'vrienden': randomElement(['kompaenen', 'gezellen', 'metgezellen', 'makkers']),
+    'afbeelding': ['beeltenis'],
+    'allemaal': ['eenieder', 'alleman'],
+    'auto': ['huifkar', 'koets'],
+    'bericht': ['telegram'],
+    'bier': ['gerstenat'],
+    'bierfiets': ['gerstenvat op wielen'],
+    'café': ['herberg', 'taveerne', 'taverne'],
+    'cafe': ['herberg', 'taveerne', 'taverne'],
+    'computer': ['schrijflei'],
+    'denk': ['peins'],
+    'dorstig': ['natgierig'],
+    ' en ': [' ende '],
+    'feest': ['bal'],
+    'feestje': ['bal'],
+    'fiets([.!?:,; \n])': ['stalen ros$1'],
+    'foto': ['beeltenis'],
+    'fuif': ['bal'],
+    'grap': ['frats'],
+    'grobbendonk': ['gabberdoenk', '2280'],
+    'gsm': ['postduif'],
+    'hey': ['gegroet'],
+    'heb dorst': ['natgierig'],
+    'hoi': ['gegroet'],
+    'hallo': ['gegroet'],
+    'iedereen': ['eenieder', 'alleman'],
+    'jow': ['gegroet'],
+    'joe': ['gegroet'],
+    'loempe': ['knurft'],
+    'maar': ['maar', 'doch'],
+    'mop': ['frats'],
+    'onoprecht': ['achterkousig'],
+    'opschepper': ['blaaskaak'],
+    'selfie': ['zelfportret', 'zelfbeeltenis'],
+    'smartphone': ['pientere postduif'],
+    'sms': ['telegram'],
+    'tegenwoordig': ['jegenswoordig'],
+    'verdoeme': ['drommels'],
+    'vorselaar': ['veusseleir', 'veussel'],
+    'vriend': ['kompaen', 'gezel', 'metgezel', 'makker'],
+    'vrienden': ['kompaenen', 'gezellen', 'metgezellen', 'makkers'],
+    ' zee ': [' pekelveld '],
+    ' zon ': [' hemelvlam '],
 };
 
 
@@ -41,11 +58,9 @@ let rules = {
     'ij': 'y',
     'ei': 'ey',
     'z': 's',
-    'kk': 'ck',
-    'k': 'ck',
-    ' ck': ' k',
-    'gg': 'gh',
-    'g': 'gh',
+    'c([^ie])': 'k$1',
+    '([^ c])k+': '$1ck',
+    'g+': 'gh',
     'ooi': 'ooy',
     'oei': 'oey',
     'ui': 'uy',
@@ -62,21 +77,20 @@ function processInput() {
 
 function convertText() {
     // convert the text in the input to medieval dutch
-    let words = input.value.split(' ');
-    words = translate(words);
-    result = applyRules(words.join(' '));
+    // let words = input.value.split(' ');
+    result = translate(input.value);
+    result = applyRules(result);
     return result
 }
 
 
-function translate(words) {
-    return words.map(n => {
-        if (n in dict) {
-            return dict[n];
-        } else {
-            return n;
-        }
-    });
+function translate(text) {
+    let result = text;
+    for (const [key, value] of Object.entries(dict)) {
+        result = result.replace(new RegExp(key, 'gi'), randomElement(value));
+    }
+
+    return result;
 }
 
 
