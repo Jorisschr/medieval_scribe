@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { RateLimiter, burnPasswordCheck, hashPassword, verifyPassword } from './security.js';
@@ -43,6 +43,22 @@ const CONTENT_SECURITY_POLICY = [
 
 const SVG_SECURITY_POLICY = "default-src 'none'; style-src 'unsafe-inline'";
 
+// A fingerprint of every file in the public folder. In production pages link to files under
+// /v/<fingerprint>/..., which changes with every update, so browsers and Cloudflare can cache
+// files for a long time and still never show an outdated stylesheet or script.
+function fingerprint(directory) {
+    const hash = createHash('sha256');
+    const files = readdirSync(directory, { recursive: true, withFileTypes: true })
+        .filter(entry => entry.isFile())
+        .map(entry => join(entry.parentPath, entry.name))
+        .sort();
+    for (const file of files) hash.update(file.slice(directory.length)).update(readFileSync(file));
+    return hash.digest('base64url').slice(0, 12);
+}
+
+const ASSET_LINK = /(href|src)="\/?((?:css|js|images|fonts)\/)/g;
+const VERSIONED_PATH = /^\/v\/[A-Za-z0-9_-]{1,32}(\/.*)$/;
+
 class HttpError extends Error {
     constructor(status, message) {
         super(message);
@@ -57,6 +73,7 @@ export function createApp(config) {
     const loginLimiter = new RateLimiter({ limit: 10, windowMs: 15 * 60 * 1000 });
     const staticCache = new Map();
     const indexTemplate = readFileSync(join(config.publicDir, 'index.html'), 'utf8');
+    const assetPrefix = config.production ? `/v/${fingerprint(config.publicDir)}/` : '/';
 
     // ---------- Helpers ----------
 
@@ -124,6 +141,7 @@ export function createApp(config) {
     }
 
     function send(res, status, body, type = 'text/html; charset=utf-8') {
+        if (type.startsWith('text/html')) body = String(body).replace(ASSET_LINK, `$1="${assetPrefix}$2`);
         res.writeHead(status, { 'Content-Type': type, 'Cache-Control': 'no-store' });
         res.end(body);
     }
@@ -148,7 +166,7 @@ export function createApp(config) {
         return Number.isInteger(number) && number >= min && number <= max ? number : null;
     }
 
-    async function serveStatic(req, res, pathname) {
+    async function serveStatic(req, res, pathname, cacheControl) {
         const file = normalize(join(config.publicDir, pathname));
         if (!file.startsWith(config.publicDir + sep)) throw new HttpError(404, 'Not found');
 
@@ -166,11 +184,12 @@ export function createApp(config) {
             if (config.production) staticCache.set(file, entry);
         }
 
-        const headers = { 'Content-Type': entry.type, ETag: entry.etag, 'Cache-Control': 'no-cache' };
+        const headers = { 'Content-Type': entry.type, ETag: entry.etag, 'Cache-Control': cacheControl };
         // Our SVG images animate with an inline <style>; they get a policy that allows exactly
         // that and nothing else (no scripts, no external resources)
         if (entry.type === CONTENT_TYPES['.svg']) headers['Content-Security-Policy'] = SVG_SECURITY_POLICY;
-        if (req.headers['if-none-match'] === entry.etag) {
+        // Cloudflare turns ETags into weak ones (W/"...") when it compresses a response
+        if (req.headers['if-none-match']?.replace(/^W\//, '') === entry.etag) {
             res.writeHead(304, headers);
             res.end();
             return;
@@ -344,8 +363,17 @@ export function createApp(config) {
 
         if (req.method !== 'GET' && req.method !== 'HEAD') throw new HttpError(405, 'Method not allowed');
         if (pathname === '/index.html') return redirect(res, '/');
-        if (!user && !PUBLIC_PREFIXES.some(prefix => pathname.startsWith(prefix))) return redirect(res, '/login');
-        return serveStatic(req, res, pathname);
+
+        const versioned = pathname.match(VERSIONED_PATH);
+        const path = versioned ? versioned[1] : pathname;
+        const isPublic = PUBLIC_PREFIXES.some(prefix => path.startsWith(prefix));
+        if (!user && !isPublic) return redirect(res, '/login');
+
+        // Versioned files never change. Files behind the login are only cached by the browser,
+        // never by Cloudflare, so they can't be served to someone who isn't logged in.
+        const cacheControl = !versioned ? 'no-cache'
+            : `${isPublic ? 'public' : 'private'}, max-age=31536000, immutable`;
+        return serveStatic(req, res, path, cacheControl);
     }
 
     const server = createServer(async (req, res) => {

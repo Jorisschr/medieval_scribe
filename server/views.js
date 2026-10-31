@@ -67,7 +67,9 @@ function page({ title, user, wide = false, scripts = [] }, content) {
     <meta name="robots" content="noindex">
     <title>${title} · Kanselaris</title>
     <meta name="theme-color" content="#1a120b">
-    <link rel="icon" href="/images/medieval_feather.PNG">
+    <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
     <link rel="preload" href="/fonts/unifraktur-maguntia.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/style.css">
     ${scripts.map(src => html`<script type="module" src="${src}"></script>`)}
