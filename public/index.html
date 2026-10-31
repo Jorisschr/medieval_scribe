@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medieval Scribe</title>
+    <meta name="description" content="Schryf uw woorden en de schryver zet ze om in middeleeuws Nederlands.">
+    <meta name="theme-color" content="#1a120b">
+    <link rel="icon" href="images/medieval_feather.PNG">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@400;500;700&family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/app.js"></script>
+</head>
+<body>
+    <header class="masthead">
+        <svg class="masthead__quill" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M58 4C40 6 22 18 14 40l-4 12 3 1 4-10c4 1 9 0 13-3-3 0-6-1-8-2 5 0 10-2 14-5-3 0-6-1-8-2 6-1 11-4 15-8-3 0-5-1-7-2 7-3 11-10 12-17z"/>
+            <path d="M10 52l-4 8" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h1 class="masthead__title">Medieval Scribe</h1>
+        <p class="masthead__motto">Schryf uw woorden, en de schryver zal ze in oude letteren stellen</p>
+    </header>
+
+    <main class="codex">
+        <section class="folio folio--verso" aria-labelledby="input-heading">
+            <span class="corner corner--tl" aria-hidden="true"></span>
+            <span class="corner corner--tr" aria-hidden="true"></span>
+            <span class="corner corner--bl" aria-hidden="true"></span>
+            <span class="corner corner--br" aria-hidden="true"></span>
+
+            <h2 class="rubric" id="input-heading">Uw woorden</h2>
+            <label class="visually-hidden" for="input">Schrijf hier je tekst</label>
+            <textarea class="folio__text folio__text--input" id="input" spellcheck="false"
+                      placeholder="Schrijf hier je tekst…" autofocus></textarea>
+
+            <div class="folio__actions">
+                <button class="seal-button seal-button--quiet" id="clear" type="button">Wis</button>
+            </div>
+            <span class="folio__number" aria-hidden="true">f. i<sup>v</sup></span>
+        </section>
+
+        <div class="codex__gutter" aria-hidden="true"></div>
+
+        <section class="folio folio--recto" aria-labelledby="output-heading">
+            <span class="corner corner--tl" aria-hidden="true"></span>
+            <span class="corner corner--tr" aria-hidden="true"></span>
+            <span class="corner corner--bl" aria-hidden="true"></span>
+            <span class="corner corner--br" aria-hidden="true"></span>
+
+            <h2 class="rubric" id="output-heading">Des schryvers handt</h2>
+            <div class="folio__text folio__text--output" id="output"
+                 data-placeholder="Hier verschynt uw schrift, in inckt ende vlyt geschreven."></div>
+
+            <div class="folio__actions">
+                <span class="toast" id="toast" role="status" aria-live="polite"></span>
+                <button class="seal-button" id="copy" type="button" disabled>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8 3h9l4 4v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM4 7v13a1 1 0 0 0 1 1h11"/>
+                    </svg>
+                    Kopieer
+                </button>
+            </div>
+            <span class="folio__number" aria-hidden="true">f. ii<sup>r</sup></span>
+        </section>
+    </main>
+
+    <footer class="colophon">
+        <span class="colophon__fleuron" aria-hidden="true">❦</span>
+        Geschreven anno domini <span id="year">MMXXVI</span>
+        <span class="colophon__fleuron" aria-hidden="true">❦</span>
+    </footer>
+</body>
+</html>
