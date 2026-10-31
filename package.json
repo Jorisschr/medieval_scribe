@@ -5,10 +5,11 @@
   "description": "Converts Dutch text into medieval looking Dutch while you type.",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
-    "dev": "node scripts/serve.js",
+    "start": "node server/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
     "test": "node --test"
   }
 }

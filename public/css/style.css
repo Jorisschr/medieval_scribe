@@ -209,7 +209,7 @@ body {
     margin: 0 0 1rem;
     font-family: var(--font-blackletter);
     font-weight: normal;
-    font-size: 1.9rem;
+    font-size: clamp(1.45rem, 2.4vw, 1.9rem);
     color: var(--rubric);
     text-align: center;
     justify-content: center;
@@ -383,6 +383,246 @@ body {
     opacity: 1;
 }
 
+/* ---------- Account menu ---------- */
+
+.account {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+}
+
+.account form {
+    margin: 0;
+}
+
+.account__name {
+    font-style: italic;
+    color: rgba(238, 223, 187, 0.65);
+}
+
+.account__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--gold);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.account__link:hover {
+    color: #f6dc94;
+    text-decoration: underline;
+}
+
+/* ---------- Single sheet pages: login, invites, admin ---------- */
+
+.masthead--compact .masthead__title {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+}
+
+.masthead__home {
+    text-decoration: none;
+}
+
+.sheet {
+    width: 100%;
+    max-width: 560px;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.65));
+}
+
+.sheet--wide {
+    max-width: 960px;
+}
+
+.folio--single {
+    border-radius: 4px;
+    box-shadow: 0 1px 0 #d4bd8c, 0 2px 0 #c4ab78, 0 3px 0 #b99e6a, 0 5px 0 #3a2615;
+}
+
+.sheet__intro {
+    margin: 0 0 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+.section-title {
+    margin: 2rem 0 0.75rem;
+    font-family: var(--font-hand);
+    font-weight: 500;
+    font-size: 1.45rem;
+    color: var(--rubric);
+    border-bottom: 1px solid rgba(141, 100, 33, 0.35);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.form--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.form--inline .field {
+    flex: 1 1 14rem;
+}
+
+.form--inline .field--small {
+    flex: 0 1 9rem;
+}
+
+.form__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.field__label {
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+}
+
+.field__input {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border: 0;
+    border-bottom: 1px solid rgba(74, 53, 34, 0.5);
+    border-radius: 2px;
+    font-family: var(--font-book);
+    font-size: 1.1rem;
+    color: var(--ink);
+    background: rgba(255, 248, 228, 0.45);
+}
+
+.field__input:focus {
+    outline: none;
+    border-bottom-color: var(--rubric);
+    background: rgba(255, 248, 228, 0.75);
+}
+
+.field__hint {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: rgba(74, 53, 34, 0.7);
+}
+
+.note {
+    margin: 0 0 1.25rem;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid currentColor;
+    font-size: 1.02rem;
+    background: rgba(255, 248, 228, 0.4);
+}
+
+.note p {
+    margin: 0 0 0.6rem;
+}
+
+.note--error {
+    color: var(--rubric);
+}
+
+.note--success {
+    color: #3d5a1e;
+}
+
+.copy-field {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.copy-field .field__input {
+    font-size: 0.95rem;
+}
+
+.link {
+    color: var(--rubric);
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.02rem;
+}
+
+.ledger th {
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    text-align: left;
+    color: var(--ink-soft);
+}
+
+.ledger th,
+.ledger td {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(110, 72, 32, 0.2);
+    white-space: nowrap;
+}
+
+.ledger td:first-child {
+    white-space: normal;
+}
+
+.ledger__action {
+    text-align: right;
+}
+
+.ledger__action form {
+    margin: 0;
+}
+
+.text-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--rubric);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.muted {
+    color: rgba(74, 53, 34, 0.6);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0 0.5rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    border: 1px solid currentColor;
+}
+
+.badge--active { color: #3d5a1e; }
+.badge--used,
+.badge--expired { color: rgba(74, 53, 34, 0.7); }
+.badge--revoked { color: var(--rubric); }
+.badge--admin { color: var(--lapis); }
+
 /* ---------- Colophon ---------- */
 
 .colophon {
@@ -489,6 +729,17 @@ body {
 
     .folio__number {
         display: none;
+    }
+
+    .folio--single {
+        height: auto;
+        min-height: 0;
+    }
+
+    .account {
+        position: static;
+        align-self: flex-end;
+        margin-bottom: -0.5rem;
     }
 }
 
