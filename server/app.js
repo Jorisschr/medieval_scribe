@@ -20,6 +20,7 @@ const CONTENT_TYPES = {
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.svg': 'image/svg+xml',
+    '.webp': 'image/webp',
     '.woff2': 'font/woff2',
     '.txt': 'text/plain; charset=utf-8',
 };
@@ -39,6 +40,8 @@ const CONTENT_SECURITY_POLICY = [
     "base-uri 'none'",
     "object-src 'none'",
 ].join('; ');
+
+const SVG_SECURITY_POLICY = "default-src 'none'; style-src 'unsafe-inline'";
 
 class HttpError extends Error {
     constructor(status, message) {
@@ -164,6 +167,9 @@ export function createApp(config) {
         }
 
         const headers = { 'Content-Type': entry.type, ETag: entry.etag, 'Cache-Control': 'no-cache' };
+        // Our SVG images animate with an inline <style>; they get a policy that allows exactly
+        // that and nothing else (no scripts, no external resources)
+        if (entry.type === CONTENT_TYPES['.svg']) headers['Content-Security-Policy'] = SVG_SECURITY_POLICY;
         if (req.headers['if-none-match'] === entry.etag) {
             res.writeHead(304, headers);
             res.end();

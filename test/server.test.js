@@ -91,6 +91,12 @@ describe('access without logging in', () => {
         assert.equal(headers.get('x-content-type-options'), 'nosniff');
         assert.equal(headers.get('referrer-policy'), 'same-origin');
     });
+
+    test('SVG images may only use inline styles', async () => {
+        const { status, headers } = await request('/images/candles.svg');
+        assert.equal(status, 200);
+        assert.equal(headers.get('content-security-policy'), "default-src 'none'; style-src 'unsafe-inline'");
+    });
 });
 
 describe('logging in', () => {
@@ -106,7 +112,7 @@ describe('logging in', () => {
 
         const home = await request('/', { cookie });
         assert.equal(home.status, 200);
-        assert.match(home.body, /Afmelden/);
+        assert.match(home.body, /Vaerwel/);
         assert.match(home.body, /href="\/admin"/);
         assert.equal((await request('/js/app.js', { cookie })).status, 200);
 

@@ -53,7 +53,7 @@ export function accountNav(user) {
             <span class="account__name">${user.username}</span>
             ${user.isAdmin && html`<a class="account__link" href="/admin">Beheer</a>`}
             <form method="post" action="/logout">
-                <button class="account__link" type="submit">Afmelden</button>
+                <button class="account__link" type="submit" title="Afmelden">Vaerwel</button>
             </form>
         </nav>`;
 }
@@ -75,9 +75,11 @@ function page({ title, user, wide = false, scripts = [] }, content) {
 <body>
     ${accountNav(user)}
     <header class="masthead masthead--compact">
+        <img class="masthead__candles" src="/images/candles.svg" alt="">
         <a class="masthead__home" href="/">
             <h1 class="masthead__title">Kanselaris</h1>
         </a>
+        <img class="masthead__candles masthead__candles--right" src="/images/candles.svg" alt="">
     </header>
     <main class="sheet${wide ? ' sheet--wide' : ''}">
         <section class="folio folio--single">

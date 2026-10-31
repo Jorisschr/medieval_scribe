@@ -1,37 +1,70 @@
 # Runs Kanselaris (Medieval Scribe) on your server. Settings come from a .env file next to this one
 # (see .env.example). Start with: docker compose up -d --build
+#
+# Two containers from the same image:
+# - scribe:  the app. It sits on an internal network only, so even if it were compromised it
+#            could not reach the internet, your home network or other containers.
+# - gateway: forwards connections from the server's port to the app, and does nothing else.
+
+x-hardening: &hardening
+  restart: unless-stopped
+  init: true
+  # The image runs as user 65532, which doesn't exist on the host
+  read_only: true
+  tmpfs:
+    - /tmp:size=16m,noexec,nosuid,nodev
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  ipc: private
+  pids_limit: 100
+
 services:
   scribe:
+    <<: *hardening
     build: .
     image: medieval-scribe
     container_name: medieval-scribe
-    restart: unless-stopped
-    init: true
     environment:
       ADMIN_USERNAME: ${ADMIN_USERNAME:?set ADMIN_USERNAME in .env}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
       PUBLIC_URL: ${PUBLIC_URL:?set PUBLIC_URL in .env, e.g. https://scribe.example.com}
-      # The app sits behind a reverse proxy (Caddy, Cloudflare Tunnel, ...), which passes on the client IP
+      # Requests arrive through the tunnel, which passes on the visitor's IP address
       TRUST_PROXY: "true"
       SESSION_DAYS: ${SESSION_DAYS:-30}
     volumes:
       - scribe-data:/data
-    # By default only reachable from the server itself on port 8473; the tunnel or reverse proxy
-    # forwards traffic from the internet. Set BIND_ADDRESS=0.0.0.0 only if that proxy runs on
-    # another machine in your network. Never forward this port on your router: with TRUST_PROXY
-    # on, clients could fake their IP address.
+    networks:
+      - isolated
+    mem_limit: 256m
+    cpus: 1.0
+
+  gateway:
+    <<: *hardening
+    image: medieval-scribe
+    container_name: medieval-scribe-gateway
+    command: ["server/relay.js"]
+    environment:
+      RELAY_TARGET: scribe:8080
+    depends_on:
+      scribe:
+        condition: service_healthy
+    networks:
+      - isolated
+      - default
+    # By default only reachable from the server itself, for the tunnel. Set BIND_ADDRESS=0.0.0.0
+    # only if the tunnel runs on another machine. Never forward this port on your router: the
+    # app trusts the tunnel to report visitors' IP addresses.
     ports:
       - "${BIND_ADDRESS:-127.0.0.1}:${HOST_PORT:-8473}:8080"
-    # Hardening: nothing to write except the database, no extra privileges
-    read_only: true
-    tmpfs:
-      - /tmp
-    cap_drop:
-      - ALL
-    security_opt:
-      - no-new-privileges:true
-    mem_limit: 256m
-    pids_limit: 100
+    mem_limit: 64m
+    cpus: 0.5
+
+networks:
+  # No route out: containers on it can only talk to each other
+  isolated:
+    internal: true
 
 volumes:
   scribe-data:
