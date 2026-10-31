@@ -65,7 +65,7 @@ function page({ title, user, wide = false, scripts = [] }, content) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
-    <title>${title} · Medieval Scribe</title>
+    <title>${title} · Kanselaris</title>
     <meta name="theme-color" content="#1a120b">
     <link rel="icon" href="/images/medieval_feather.PNG">
     <link rel="preload" href="/fonts/unifraktur-maguntia.woff2" as="font" type="font/woff2" crossorigin>
@@ -76,7 +76,7 @@ function page({ title, user, wide = false, scripts = [] }, content) {
     ${accountNav(user)}
     <header class="masthead masthead--compact">
         <a class="masthead__home" href="/">
-            <h1 class="masthead__title">Medieval Scribe</h1>
+            <h1 class="masthead__title">Kanselaris</h1>
         </a>
     </header>
     <main class="sheet${wide ? ' sheet--wide' : ''}">

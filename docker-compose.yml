@@ -1,4 +1,4 @@
-# Runs Medieval Scribe on your server. Settings come from a .env file next to this one
+# Runs Kanselaris (Medieval Scribe) on your server. Settings come from a .env file next to this one
 # (see .env.example). Start with: docker compose up -d --build
 services:
   scribe:

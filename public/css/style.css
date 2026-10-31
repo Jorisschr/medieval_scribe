@@ -40,7 +40,7 @@
 }
 
 :root {
-    --desk: #22160d;
+    --desk: #34200f;
     --desk-dark: #0f0905;
     --parchment: #eedfbb;
     --parchment-shade: #d9c393;
@@ -61,6 +61,10 @@
     /* Fine grain and larger stains, drawn as SVG noise so no image files are needed */
     --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .22 0 0 0 0 .1 .28 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     --stains: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .12 0 0 -.9 0 .5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    --wood-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='800'%3E%3Cfilter id='w' filterUnits='userSpaceOnUse' x='-200' y='-200' width='2000' height='1200'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0018 .006' numOctaves='2' seed='5' result='warp'/%3E%3CfeTurbulence type='turbulence' baseFrequency='.0009 .055' numOctaves='3' seed='9' result='lines'/%3E%3CfeDisplacementMap in='lines' in2='warp' scale='90' xChannelSelector='R' yChannelSelector='G' result='bent'/%3E%3CfeColorMatrix in='bent' values='0 0 0 0 .55  0 0 0 0 .36  0 0 0 0 .2  -1 0 0 0 .48'/%3E%3C/filter%3E%3Crect x='-200' y='-200' width='2000' height='1200' filter='url(%23w)'/%3E%3C/svg%3E");
+    --wood-pores: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.003 .7' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.1 0 0 0 .5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    --wood-wear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1000'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0025' numOctaves='3' seed='19' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .05  0 0 0 0 .03  0 0 0 0 .01  -1.4 0 0 0 .75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    --plank: 200px;
     --corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23b0832e' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M4 62V16C4 9 9 4 16 4h46'/%3E%3Cpath d='M10 62V20c0-6 4-10 10-10h42' stroke-width='.8'/%3E%3Cpath d='M16 30c0-8 6-14 14-14' stroke='%239b2316'/%3E%3Cpath d='M22 38c4-10 6-14 16-16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%239b2316'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23d4ab52'/%3E%3Cpath d='M28 26c7-3 12 0 12 7-7 3-12 0-12-7z' fill='%23b0832e'/%3E%3Cpath d='M38 14c5-3 9-1 10 4-5 3-9 1-10-4zM14 38c-3 5-1 9 4 10 3-5 1-9-4-10z' fill='%231f3a73' opacity='.85'/%3E%3C/svg%3E");
 }
 
@@ -84,11 +88,21 @@ body {
     padding: 2rem 16px 1.5rem;
     color: var(--parchment);
     font-family: var(--font-book);
+    /* An old wooden table, lit by a candle from above */
     background:
-        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 176, 90, 0.2), transparent 70%),
-        radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.65) 100%),
-        repeating-linear-gradient(91deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 11px),
-        repeating-linear-gradient(89deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 37px),
+        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 176, 90, 0.16), transparent 70%),
+        radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%),
+        repeating-linear-gradient(to bottom,
+            transparent 0 calc(var(--plank) - 3px),
+            rgba(0, 0, 0, 0.6) calc(var(--plank) - 3px) calc(var(--plank) - 1px),
+            rgba(255, 214, 160, 0.05) calc(var(--plank) - 1px) var(--plank)),
+        repeating-linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.12) 0 var(--plank),
+            transparent var(--plank) calc(var(--plank) * 2),
+            rgba(255, 200, 140, 0.025) calc(var(--plank) * 2) calc(var(--plank) * 3)),
+        var(--wood-wear),
+        var(--wood-pores),
+        var(--wood-grain),
         var(--desk);
     background-attachment: fixed;
 }
@@ -294,15 +308,18 @@ body {
     border: 0;
     outline: none;
     resize: none;
-    font-family: var(--font-book);
-    font-size: 1.28rem;
-    color: var(--ink-soft);
+    font-family: var(--font-hand);
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
     caret-color: var(--rubric);
+    text-shadow: 0 0 1px rgba(42, 26, 14, 0.45), 0 0 0.5px rgba(42, 26, 14, 0.6);
 }
 
 .folio__text--input::placeholder {
-    color: rgba(74, 53, 34, 0.45);
-    font-style: italic;
+    color: rgba(42, 26, 14, 0.38);
+    text-shadow: none;
+    opacity: 1;
 }
 
 .folio__text--output {
@@ -771,7 +788,7 @@ body {
     }
 
     .folio__text--input {
-        font-size: 1.1rem;
+        font-size: 1.32rem;
     }
 
     .folio__text--output {

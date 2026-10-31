@@ -14,7 +14,7 @@ try {
 }
 
 app.server.listen(config.port, config.host, () => {
-    console.log(`Medieval Scribe listening on ${config.host}:${config.port} (public URL ${config.publicUrl})`);
+    console.log(`Kanselaris listening on ${config.host}:${config.port} (public URL ${config.publicUrl})`);
 });
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

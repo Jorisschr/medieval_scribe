@@ -30,14 +30,14 @@ function showToast(message) {
 async function copyToClipboard() {
     try {
         await navigator.clipboard.writeText(output.textContent);
-        showToast('Afschrift genomen');
+        showToast('Afsghrift ghenomen');
     } catch {
         // The clipboard API needs HTTPS (or localhost); fall back to copying a selection
         const selection = getSelection();
         selection.selectAllChildren(output);
         const copied = document.execCommand('copy');
         selection.removeAllRanges();
-        showToast(copied ? 'Afschrift genomen' : 'Kopiëren mislukt, selecteer de tekst zelf');
+        showToast(copied ? 'Afsghrift ghenomen' : 'Kopiëren mislukt, selecteer de tekst zelf');
     }
 }
 
