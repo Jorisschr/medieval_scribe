@@ -59,6 +59,9 @@ export function createApp(config) {
 
     function clientIp(req) {
         if (config.trustProxy) {
+            // Cloudflare (including Cloudflare Tunnel) puts the visitor's address in its own header
+            const cloudflare = req.headers['cf-connecting-ip'];
+            if (cloudflare) return cloudflare;
             const forwarded = req.headers['x-forwarded-for']?.split(',').at(-1)?.trim();
             if (forwarded) return forwarded;
         }

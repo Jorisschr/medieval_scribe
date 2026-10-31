@@ -25,18 +25,18 @@ cases('spelling rules', [
     ['zonder', 'sonder'],
     ['lachen', 'laghen'],
     ['schrijven', 'sghryven'],
-    ['cola', 'kola'],
+    ['clown', 'klown'],
     ['ik', 'ick'],
     ['werken', 'wercken'],
-    ['kind', 'kindt'],
+    ['rond', 'rondt'],
     ['gaan', 'ghaen'],
-    ['mooi', 'mooy'],
+    ['plooi', 'plooy'],
     ['huis', 'huysch'],
     ['toen', 'toen'],
 ]);
 
 cases('word endings are converted at the end of the text too', [
-    ['kind', 'kindt'],
+    ['rond', 'rondt'],
     ['Ik heb een fiets', 'Ick heb een stalen ros'],
     ['Ik heb een fiets.', 'Ick heb een stalen ros.'],
 ]);
@@ -92,6 +92,33 @@ cases('phrases', [
     ['ik heb dorst', 'ick ben natgierig'],
     ['Ik heb  dorst!', 'Ick ben natgierig!'],
     ['ik heb, dorst', 'ick heb, dorst'],
+]);
+
+cases('gij forms', [
+    ['Ben jij moe?', 'Syt ghy moe?'],
+    ['jij bent welkom', 'ghy syt welckom'],
+    ['Jullie zijn welkom', 'Ghylieden syt welckom'],
+    ['Heb jij dorst?', 'Hebt ghy dorst?'],
+    ['is dat jouw boek', 'isch dat uw codex'],
+    ['je bent welkom', 'je bent welckom'],
+    ['heb je dorst', 'heb je dorst'],
+]);
+
+cases('newer dictionary words and their forms', [
+    ['ziekenhuizen', 'ghasthuysen'],
+    ['hondje', 'reckeltje'],
+    ["baby's", 'suyghelinghen'],
+    ['katten', 'muysenvanghers'],
+    ['meisjes', 'deernes'],
+    ['Doei!', 'Vaerwel!'],
+    ['bedankt', 'ghrote danck'],
+    ['mijn kinderen', 'myn telghen'],
+]);
+
+cases('short dictionary words do not swallow other words', [
+    ['pas op', 'pasch op'],
+    ['de pan', 'de pan'],
+    ['nul', 'nul'],
 ]);
 
 cases('non-words pass through unchanged', [
@@ -166,8 +193,8 @@ test('editing in the middle only changes the edited word', () => {
 test('phrases are recognised when typed word by word', () => {
     const scribe = new Scribe({ random: first });
     assert.equal(type(scribe, 'ik heb dorst'), 'ick ben natgierig');
-    assert.equal(scribe.update('ik heb dorst nu'), 'ick ben natgierig nu');
-    assert.equal(scribe.update('ik heb nu'), 'ick heb nu');
+    assert.equal(scribe.update('ik heb dorst hier'), 'ick ben natgierig hier');
+    assert.equal(scribe.update('ik heb hier'), 'ick heb hier');
 });
 
 test('clearing and pasting text', () => {

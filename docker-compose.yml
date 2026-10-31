@@ -16,10 +16,12 @@ services:
       SESSION_DAYS: ${SESSION_DAYS:-30}
     volumes:
       - scribe-data:/data
-    # Only reachable from the server itself; the reverse proxy forwards traffic from the internet.
-    # Never publish this port publicly while TRUST_PROXY is on, or clients could fake their IP.
+    # By default only reachable from the server itself on port 8473; the tunnel or reverse proxy
+    # forwards traffic from the internet. Set BIND_ADDRESS=0.0.0.0 only if that proxy runs on
+    # another machine in your network. Never forward this port on your router: with TRUST_PROXY
+    # on, clients could fake their IP address.
     ports:
-      - "127.0.0.1:${HOST_PORT:-8080}:8080"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HOST_PORT:-8473}:8080"
     # Hardening: nothing to write except the database, no extra privileges
     read_only: true
     tmpfs:

@@ -7,12 +7,12 @@ const RULES = [
     [/ei/g, 'ey'],                                                  // klein → kleyn, moeilijk → moeylyk
     [/z/g, 's'],                                                    // zee → see
     [/ch/g, 'g'],                                                   // lachen → laghen, schrijven → sghryven
-    [/c(?![eik])/g, 'k'],                                           // cola → kola
+    [/c(?![eik])/g, 'k'],                                           // clown → klown
     [/(?<=.)(?<![cs])k+/g, 'ck'],                                   // ik → ick, makker → macker
     [/g+(?!h)/g, 'gh'],                                             // gaan → ghaen
-    [/ooi/g, 'ooy'],                                                // mooi → mooy
+    [/ooi/g, 'ooy'],                                                // plooi → plooy
     [/ui/g, 'uy'],                                                  // huis → huys
-    [/d$/, 'dt'],                                                   // kind → kindt
+    [/d$/, 'dt'],                                                   // rond → rondt
     [/s$/, 'sch'],                                                  // mens → mensch
 ];
 

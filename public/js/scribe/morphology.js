@@ -42,7 +42,7 @@ export function pluralize(word) {
         stem = onset + vowels[0] + coda;                                // blaaskaak → blaaskaken
     }
     if (coda.length === 1) {
-        stem = stem.replace(/s$/, 'z').replace(/f$/, 'v');              // postduif → postduiven
+        stem = stem.replace(/f$/, 'v');                                // postduif → postduiven
     }
     return stem + 'en';
 }
