@@ -1,0 +1,35 @@
+# Runs Medieval Scribe on your server. Settings come from a .env file next to this one
+# (see .env.example). Start with: docker compose up -d --build
+services:
+  scribe:
+    build: .
+    image: medieval-scribe
+    container_name: medieval-scribe
+    restart: unless-stopped
+    init: true
+    environment:
+      ADMIN_USERNAME: ${ADMIN_USERNAME:?set ADMIN_USERNAME in .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
+      PUBLIC_URL: ${PUBLIC_URL:?set PUBLIC_URL in .env, e.g. https://scribe.example.com}
+      # The app sits behind a reverse proxy (Caddy, Cloudflare Tunnel, ...), which passes on the client IP
+      TRUST_PROXY: "true"
+      SESSION_DAYS: ${SESSION_DAYS:-30}
+    volumes:
+      - scribe-data:/data
+    # Only reachable from the server itself; the reverse proxy forwards traffic from the internet.
+    # Never publish this port publicly while TRUST_PROXY is on, or clients could fake their IP.
+    ports:
+      - "127.0.0.1:${HOST_PORT:-8080}:8080"
+    # Hardening: nothing to write except the database, no extra privileges
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    pids_limit: 100
+
+volumes:
+  scribe-data:

@@ -68,9 +68,7 @@ function page({ title, user, wide = false, scripts = [] }, content) {
     <title>${title} · Medieval Scribe</title>
     <meta name="theme-color" content="#1a120b">
     <link rel="icon" href="/images/medieval_feather.PNG">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@400;500;700&family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&display=swap">
+    <link rel="preload" href="/fonts/unifraktur-maguntia.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/style.css">
     ${scripts.map(src => html`<script type="module" src="${src}"></script>`)}
 </head>

@@ -1,0 +1,10 @@
+.git
+.claude
+.env
+.env.*
+data
+node_modules
+test
+Dockerfile
+docker-compose.yml
+*.md

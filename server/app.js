@@ -21,6 +21,7 @@ const CONTENT_TYPES = {
     '.jpg': 'image/jpeg',
     '.svg': 'image/svg+xml',
     '.woff2': 'font/woff2',
+    '.txt': 'text/plain; charset=utf-8',
 };
 
 // Files the login and invite pages need before anyone is signed in
@@ -29,8 +30,8 @@ const PUBLIC_PREFIXES = ['/css/', '/images/', '/fonts/'];
 const CONTENT_SECURITY_POLICY = [
     "default-src 'self'",
     "script-src 'self'",
-    "style-src 'self' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "style-src 'self'",
+    "font-src 'self'",
     "img-src 'self' data:",
     "connect-src 'self'",
     "form-action 'self'",
